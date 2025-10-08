@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Emir'in Galaksisi - İnteraktif 3D Portfolyo
 
-## Getting Started
+Bu proje, standart portfolyo formatlarının dışına çıkarak, yazılım geliştirme yolculuğumu anlatan interaktif ve akılda kalıcı bir 3D deneyimidir.
 
-First, run the development server:
+![Emir'in Galaksisi Ekran Görüntüsü](public/images/proje_goruntusu.png)
+*(Not: Projenin güzel bir ekran görüntüsünü alıp, `proje_goruntusu.png` adıyla `public/images` klasörüne eklemelisin.)*
+
+## ✨ Hikaye
+
+Ziyaretçi, merkezinde benim olduğum bir galaksiye giriş yapar. Galaksideki her bir obje, benim veya yolculuğumun bir parçasını temsil eder:
+
+-   **☀️ Güneş:** Felsefemi ve hakkımda bilgileri temsil eden kişisel bir "yıldız".
+-   **🪐 Gezegenler:** Tamamladığım ve yörüngeye oturttuğum ana projelerim.
+-   **🛰️ Uydular:** Yeteneklerim, sosyal medya linklerim ve iletişim bilgilerim gibi beni tamamlayan, Güneş'in etrafında dönen özel 3D modeller.
+-   **🚀 Keşfedilebilir Objeler:** Galaksinin derinliklerinde süzülen "Odyssey" gemisi gibi sürprizler sizi bekliyor!
+
+## 💻 Kullanılan Teknolojiler
+
+-   **Framework:** Next.js
+-   **Dil:** TypeScript, JavaScript
+-   **3D Grafik:** Three.js, React Three Fiber (@react-three/fiber), @react-three/drei
+-   **Stil:** Inline CSS (via Style Objects), Tailwind CSS (globals)
+-   **İkonlar:** React Icons
+
+## 🚀 Nasıl Çalıştırılır?
+
+Projeyi yerel makinenizde çalıştırmak için:
 
 ```bash
+# 1. Depoyu klonlayın
+git clone [https://github.com/aydemir0/emirin-galaksisi.git](https://github.com/aydemir0/emirin-galaksisi.git)
+
+# 2. Proje dizinine gidin
+cd emirin-galaksisi
+
+# 3. Bağımlılıkları yükleyin
+npm install
+
+# 4. Geliştirme sunucusunu başlatın
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
