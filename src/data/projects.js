@@ -11,6 +11,7 @@ export const projects = [
     color: "#d89f7b",
     completionDate: "Ekim 2025",
     readme: `## Kurulum\nProjeyi yerel makinenizde çalıştırmak için adımları izleyin...`,
+    imagePosition: "center center",
     imageUrl: "/images/kampus_sosyal_logo.png", // Örnek yol, resmi public/images/ altına koymalısın
   },
   {
@@ -20,11 +21,12 @@ export const projects = [
     orbitRadius: 6,
     orbitSpeed: 0.03,
     description: "Kişisel blog yazılarımı paylaştığım, modern ve hızlı bir platform.",
-    githubUrl: "https://github.com/aydemir0/blog-projesi",
+    githubUrl: "https://github.com/aydemir0/emirin-galaksisi",
     textureUrl: "/textures/gezegen2_renk.jpg",
     color: "#a9a19a",
     completionDate: "Eylül 2025",
     readme: `## Proje Hakkında\nBu proje, Next.js'in gücünü kullanmayı amaçlamaktadır.`,
+   imagePosition: "center center",
     imageUrl: "/images/blog_projesi_logo.png", // Örnek yol
   },
 ];

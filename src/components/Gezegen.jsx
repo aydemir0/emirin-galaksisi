@@ -1,48 +1,45 @@
+// src/components/Gezegen.jsx
 "use client";
 
 import React, { useRef, useState } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { TextureLoader } from 'three/src/loaders/TextureLoader';
+import { TextureLoader } from 'three';
+import Ay from './Ay';
 
-const Gezegen = ({ onGezegenClick, ...props }) => { 
+// Veriyi 'gezegenData' prop'u ile, fonksiyonu 'onGezegenClick' prop'u ile alıyoruz.
+const Gezegen = ({ gezegenData, onGezegenClick }) => {
   const meshRef = useRef();
-  const [hovered, setHovered] = useState(false);
+  const [hovered, setHover] = useState(false);
+  const renkHaritasi = gezegenData.textureUrl ? useLoader(TextureLoader, gezegenData.textureUrl) : null;
 
-  const renkHaritasi = props.textureUrl ? useLoader(TextureLoader, props.textureUrl) : null;
-  
   useFrame(({ clock }) => {
-    const angle = clock.getElapsedTime() * props.orbitSpeed;
-    const x = props.orbitRadius * Math.sin(angle);
-    const z = props.orbitRadius * Math.cos(angle);
-    meshRef.current.position.x = x;
-    meshRef.current.position.z = z;
-    meshRef.current.rotation.y += 0.005;
+    if (meshRef.current) {
+      const angle = clock.getElapsedTime() * gezegenData.orbitSpeed;
+      const x = gezegenData.orbitRadius * Math.sin(angle);
+      const z = gezegenData.orbitRadius * Math.cos(angle);
+      const y = Math.sin(angle * (gezegenData.orbitRadius / 2)) * 0.5;
+      meshRef.current.position.set(x, y, z);
+      meshRef.current.rotation.y += 0.005;
+    }
   });
 
   return (
-    <mesh 
+    <mesh
       ref={meshRef}
-      // HATA BURADAYDI, ŞİMDİ DÜZELDİ
       onClick={(event) => {
-        // Ana sayfaya hem proje bilgilerini hem de 'event' objesini gönderiyoruz
-        onGezegenClick(props, event);
-      }}
-      onPointerOver={(event) => {
         event.stopPropagation();
-        setHovered(true);
-        document.body.style.cursor = 'pointer';
+        onGezegenClick(gezegenData); // Tıklanınca sadece temiz veri objesini geri gönder
       }}
-      onPointerOut={(event) => {
-        setHovered(false);
-        document.body.style.cursor = 'default';
-      }}
+      onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
     >
-      <sphereGeometry args={[props.size, 32, 32]} />
-      <meshStandardMaterial 
+      <sphereGeometry args={[gezegenData.size, 32, 32]} />
+      <meshStandardMaterial
         map={renkHaritasi}
-        emissive={hovered ? props.color || '#ffffff' : '#000000'}
+        emissive={hovered ? gezegenData.color || '#ffffff' : '#000000'}
         emissiveIntensity={hovered ? 0.5 : 0}
       />
+      {gezegenData.id === 'kampus-sosyal' && <Ay />}
     </mesh>
   );
 };

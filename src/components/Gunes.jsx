@@ -1,32 +1,14 @@
+// src/components/Gunes.jsx
 "use client";
 
 import { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
+import { TextureLoader } from "three"; // three/src/loaders/TextureLoader yerine bu daha iyi
 import * as THREE from "three";
-
-// Uydular için test component'i (Boyutunu büyüttük)
-const Uydu = ({ position }) => {
-  return (
-    <mesh position={position}>
-      <sphereGeometry args={[0.8, 32, 32]} /> {/* TEST: Boyutu artırdık (0.2 -> 0.8) */}
-      <meshStandardMaterial color="white" emissive="white" emissiveIntensity={2} />
-    </mesh>
-  );
-};
-
 
 const Gunes = ({ onClick, isActive }) => { 
   const sunTexture = useLoader(TextureLoader, "/textures/gunes.jpg");
   const sunRef = useRef();
-
-  // Uydu pozisyonlarını test için uzaklaştırdık
-  const satellites = [
-    { id: 'photo', position: [5, 0, 0] },   // TEST: Mesafeyi artırdık (2.5 -> 5)
-    { id: 'bio', position: [0, 5, 0] },     // TEST: Mesafeyi artırdık (2.5 -> 5)
-    { id: 'social', position: [-5, 0, 0] }, // TEST: Mesafeyi artırdık (2.5 -> 5)
-    { id: 'contact', position: [0, -5, 0] },// TEST: Mesafeyi artırdık (2.5 -> 5)
-  ];
 
   useFrame((state, delta) => {
     if (sunRef.current) {
@@ -35,9 +17,8 @@ const Gunes = ({ onClick, isActive }) => {
   });
 
   return (
-    // DÜZELTME: onClick olayını, atmosfer dahil tüm grubu kapsayacak şekilde dışarı taşıdık.
     <group ref={sunRef} onClick={onClick}>
-      <mesh> {/* Bu mesh artık sadece görsel, tıklama dış grupta */}
+      <mesh>
         <sphereGeometry args={[1.5, 32, 32]} />
         <meshBasicMaterial map={sunTexture} />
       </mesh>
@@ -51,9 +32,7 @@ const Gunes = ({ onClick, isActive }) => {
           side={THREE.BackSide}
         />
       </mesh>
-
-      {/* Eğer Güneş aktifse uyduları göster */}
-      {isActive && satellites.map(s => <Uydu key={s.id} position={s.position} />)}
+      {/* Test uyduları buradan kaldırıldı */}
     </group>
   );
 };
