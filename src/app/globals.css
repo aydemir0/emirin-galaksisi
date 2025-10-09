@@ -39,9 +39,7 @@ body {
     transform: translateY(0);
   }
 }
-/* globals.css dosyasının en altına ekle */
 
-/* Webkit tabanlı tarayıcılar için (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 8px;
 }

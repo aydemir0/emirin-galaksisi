@@ -2,9 +2,13 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { FaGithub, FaLinkedin, FaInstagram, FaTwitter, FaReact, FaPython, FaFigma, FaGitAlt, FaDatabase } from 'react-icons/fa';
 import { SiNextdotjs, SiFlutter, SiFirebase, SiDart, SiJavascript, SiCss3, SiHtml5 } from 'react-icons/si';
 import { VscCode } from 'react-icons/vsc';
+import * as THREE from 'three';
+
 
 const iconMap = {
   GitHub: <FaGithub />, LinkedIn: <FaLinkedin />, Instagram: <FaInstagram />, "X (Twitter)": <FaTwitter />,
@@ -15,8 +19,28 @@ const iconMap = {
 };
 
 const BilgiPaneli = ({ proje, onClose }) => {
+  const [expandedPostId, setExpandedPostId] = useState(null);
+
+  const handleToggleExpand = (postId) => {
+    setExpandedPostId(expandedPostId === postId ? null : postId);
+  };
+
   if (!proje) {
     return null;
+  }
+  
+  if (proje.loading) {
+    return (
+      <div style={{ 
+        height: '100%', width: '33.33%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0))',
+        backdropFilter: 'blur(12px)',
+        borderLeft: `2px solid ${proje.color || 'rgba(255, 255, 255, 0.1)'}`,
+        color: 'white'
+      }}>
+        Yükleniyor...
+      </div>
+    );
   }
   
   const animasyonStili = (delay) => ({ animation: `fadeInUp 0.5s ${delay}s both ease-out` });
@@ -28,23 +52,16 @@ const BilgiPaneli = ({ proje, onClose }) => {
       backdropFilter: 'blur(12px)',
       borderLeft: `2px solid ${proje.color || 'rgba(255, 255, 255, 0.1)'}`, 
       transition: 'width 0.5s ease-in-out',
-      overflow: 'hidden' // Scan line'ın taşmasını engellemek için önemli
+      overflow: 'hidden'
     }}>
       <div style={{ padding: '2rem 2.5rem', height: '100%', overflowY: 'auto', display: 'flex', flexDirection: 'column', color: '#cbd5e1', position: 'relative' }}>
         
-        {/* --- YENİ EKLENEN SCAN LINE EFEKTİ --- */}
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '2px',
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '2px',
           background: `linear-gradient(to right, transparent, ${proje.color || '#00ffff'}, transparent)`,
           boxShadow: `0 0 10px ${proje.color || '#00ffff'}`,
-          animation: 'scanline 1s ease-out',
-          animationDelay: '0.3s',
+          animation: 'scanline 1s ease-out', animationDelay: '0.3s',
         }} />
-        {/* --- YENİ EFEKT SONU --- */}
         
         <button onClick={onClose} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '2rem', zIndex: 10 }}>&times;</button>
         
@@ -52,7 +69,7 @@ const BilgiPaneli = ({ proje, onClose }) => {
           <div style={{ 
             position: 'relative', width: '100%', 
             height: proje.id === 'profil' ? '20rem' : '12rem', 
-            marginBottom: '1.5rem', borderRadius: '0.75rem', 
+            marginBottom: '1.5rem', borderRadius: '0,75rem', 
             overflow: 'hidden', backgroundColor: 'rgba(30, 41, 59, 0.5)', 
             animation: 'fadeIn 0.5s 0.1s both' 
           }}>
@@ -60,44 +77,65 @@ const BilgiPaneli = ({ proje, onClose }) => {
               src={proje.imageUrl} 
               alt={`${proje.name} Logosu`} 
               fill
-              style={{ objectFit: 'cover', objectPosition: proje.imagePosition || 'center center' }}
+              style={{ objectFit: 'cover', objectPosition: 'center 25%' }}
             />
           </div>
         )}
         
         <div style={animasyonStili(0.2)}>
           <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: 1.2, color: proje.color }}>{proje.name}</h2>
-          {proje.completionDate && <p style={{ color: '#5eead4', fontWeight: '600', marginTop: '0.5rem' }}>{proje.completionDate}</p>}
+          {proje.completionDate && <p style={{ fontSize: '1,2rem',  color: '#5eead4', fontWeight: '600', marginTop: '0.5rem' }}>{proje.completionDate}</p>}
         </div>
         
-        <p style={{ color: '#e2e8f0', fontSize: '1.1rem', lineHeight: '1.75', marginTop: '1.5rem', ...animasyonStili(0.3) }}>{proje.description}</p>
+        <p style={{ color: '#e2e8f0', fontSize: '1.2rem', lineHeight: '1.75', marginTop: '1.5rem', ...animasyonStili(0.3) }}>{proje.description}</p>
         <hr style={{ borderColor: '#334155', margin: '2rem 0', ...animasyonStili(0.4) }} />
 
         <div style={{...animasyonStili(0.5)}}>
-          {proje.readme && <div style={{ marginBottom: '1.5rem' }}> <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>README.md</h3> <code style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.3)', color: '#d1d5db', padding: '1.5rem', borderRadius: '0.75rem', whiteSpace: 'pre-wrap', fontSize: '0.9rem', fontFamily: 'monospace' }}> {proje.readme} </code> </div>}
           
-          {proje.links && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>Linkler</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontSize: '1.8rem' }}>
-                {proje.links.map(link => (
-                  <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" title={link.name} style={{color: '#94a3b8', transition: 'color 0.2s, transform 0.2s'}} onMouseOver={e => {e.currentTarget.style.color='white'; e.currentTarget.style.transform='scale(1.1)'}} onMouseOut={e => {e.currentTarget.style.color='#94a3b8'; e.currentTarget.style.transform='scale(1)'}}>
-                    {iconMap[link.name] || link.name}
-                  </a>
-                ))}
-              </div>
+          {proje.posts && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {proje.posts.map(post => (
+                <div 
+                  key={post.id} 
+                  style={{ 
+                    padding: '0.1rem', backgroundColor: 'rgba(0,0,0,0.2)', 
+                    borderRadius: '0.5rem', border: '0.1px solid rgba(255, 255, 255, 0.1)', marginBottom: '3rem'
+                  }}
+                >
+                  <h4 style={{ margin: 0, fontWeight: 'bold', fontSize: '1.5rem', color: proje.color || '#87CEEB' }}>{post.title}</h4>
+                  <p style={{ fontSize: '1rem', color: '#94a3b8', margin: '0.25rem 0' }}>{post.publicationDate}</p>
+                  <p style={{ fontSize: '1.2rem', color: '#d1d5db', margin: '0.5rem 0 0 0', lineHeight: '1,5' }}>{post.excerpt}</p>
+                  
+                  <button 
+                    onClick={() => handleToggleExpand(post.id)}
+                    style={{ background: 'none', border: 'none', color: '#5eead4', cursor: 'pointer', padding: '0.5rem 0', marginTop: '0.5rem' }}
+                  >
+                    {expandedPostId === post.id ? 'Kapat' : 'Devamını Oku...'}
+                  </button>
+
+                  {expandedPostId === post.id && (
+                   
+                    <div className="prose prose-invert max-w-none" style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid #334155' }}>
+                      <ReactMarkdown>
+                        {post.content}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
-          
-          {proje.skills && <div style={{ marginBottom: '1.5rem' }}> <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>Teknolojiler</h3> <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}> {Object.entries(proje.skills).map(([category, skills]) => <div key={category}> <h4 style={{ fontWeight: 'bold', color: 'white', marginBottom: '0.5rem' }}>{category}</h4> <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}> {skills.map(skill => <div key={skill} title={skill} style={{ fontSize: '1.5rem', color: '#94a3b8' }}> {iconMap[skill] || skill} </div>)} </div> </div>)} </div> </div>}
-          {proje.email && <div style={{ marginBottom: '1.5rem' }}> <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>E-Posta</h3> <a href={`mailto:${proje.email}`} style={{color: '#5eead4', textDecoration: 'underline'}}>{proje.email}</a> </div>}
+
+          {proje.readme && <div style={{ marginBottom: '1.5rem' }}> <h3 style={{ fontSize: '2rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>README.md</h3> <code style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.3)', color: '#d1d5db', padding: '1.5rem', borderRadius: '0.75rem', whiteSpace: 'pre-wrap', fontSize: '1.5rem', fontFamily: 'monospace' }}> {proje.readme} </code> </div>}
+          {proje.links && <div style={{ marginBottom: '1.5rem' }}> <h3 style={{ fontSize: '2rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>Linkler</h3> <div style={{ display: 'flex', alignItems: 'center', gap: '1,5rem', fontSize: '2rem' }}> {proje.links.map(link => <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" title={link.name} style={{color: '#94a3b8', transition: 'color 0.2s, transform 0.2s'}} onMouseOver={e => {e.currentTarget.style.color='white'; e.currentTarget.style.transform='scale(1.1)'}} onMouseOut={e => {e.currentTarget.style.color='#94a3b8'; e.currentTarget.style.transform='scale(1)'}}> {iconMap[link.name] || link.name} </a>)} </div> </div>}
+          {proje.skills && <div style={{ marginBottom: '5rem' }}> <h3 style={{ fontSize: '2rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>Teknolojiler</h3> <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}> {Object.entries(proje.skills).map(([category, skills]) => <div key={category}> <h4 style={{ fontWeight: 'bold', color: 'white', marginBottom: '0.5rem' }}>{category}</h4> <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}> {skills.map(skill => <div key={skill} title={skill} style={{ fontSize: '1.5rem', color: '#94a3b8' }}> {iconMap[skill] || skill} </div>)} </div> </div>)} </div> </div>}
+          {proje.email && <div style={{ marginBottom: '1.5rem' }}> <h3 style={{ fontSize: '2rem', fontWeight: '600', color: 'white', marginBottom: '1rem' }}>E-Posta</h3> <a href={`mailto:${proje.email}`} style={{color: '#5eead4', textDecoration: 'underline'}}>{proje.email}</a> </div>}
         </div>
         
         <div style={{ flexGrow: 1, ...animasyonStili(0.6) }}></div>
-        {proje.githubUrl && <div style={animasyonStili(0.6)}><a href={proje.githubUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', backgroundColor: '#2563eb', color: 'white', fontWeight: 'bold', padding: '1rem', borderRadius: '0.5rem', textAlign: 'center', textDecoration: 'none', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.03)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>GitHub'da Görüntüle</a></div>}
+  {proje.githubUrl && <div style={{...animasyonStili(0.6), marginTop: '-10rem'}}><a href={proje.githubUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', backgroundColor: '#2563eb', color: 'white', fontWeight: 'bold', padding: '1rem', borderRadius: '0.5rem', textAlign: 'center', textDecoration: 'none', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.03)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>GitHub'da Görüntüle</a></div>}
       </div>
     </div>
   );
-};
-
+}
 export default BilgiPaneli;

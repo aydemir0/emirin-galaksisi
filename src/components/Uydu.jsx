@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber';
 
 const Uydu = ({ uyduData, onUyduClick }) => {
   // Bu component'in render edilmeye başladığını konsolda görelim
-  console.log('Rendering Uydu:', uyduData.name);
+  ('Rendering Uydu:', uyduData.name);
 
   const meshRef = useRef();
   const [hovered, setHovered] = useState(false);

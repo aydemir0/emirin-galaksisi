@@ -16,7 +16,9 @@ export const blogData = {
       title: 'React Three Fiber ile İlk 3D Sahnemi Nasıl Oluşturdum?',
       url: 'https://link-to-your-blog-post.com/post-1',
       publicationDate: 'Eylül 2025',
-      excerpt: 'Bu yazıda, sıfırdan başlayarak interaktif bir 3D web deneyimi yaratmanın temel adımlarını ve karşılaştığım zorlukları anlatıyorum.'
+     //...
+    content: `## Başlangıç\n\nBu projenin ilk adımı... \n\n### Kurulum\n\n- Next.js\n- Three.js`, // <-- SATIR SONUNA BU VİRGÜLÜ EKLE
+    excerpt: 'Bu yazıda, sıfırdan başlayarak interaktif bir 3D web deneyimi yaratmanın temel adımlarını ve karşılaştığım zorlukları anlatıyorum.'
     },
     {
       id: 'post-2',
