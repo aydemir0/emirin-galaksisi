@@ -3,7 +3,7 @@
 Bu proje, standart portfolyo formatlarının dışına çıkarak, yazılım geliştirme yolculuğumu anlatan interaktif ve akılda kalıcı bir 3D deneyimidir.
 
 ![Emir'in Galaksisi Ekran Görüntüsü](public/images/proje_goruntusu.png)
-*(Not: Projenin güzel bir ekran görüntüsünü alıp, `proje_goruntusu.png` adıyla `public/images` klasörüne eklemelisin.)*
+
 
 ## ✨ Hikaye
 
