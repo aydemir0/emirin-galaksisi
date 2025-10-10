@@ -1,7 +1,7 @@
 // src/lib/firebase.js
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth"; // YENİ: Auth servisini import ettik
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,9 +13,21 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
-const auth = getAuth(app); // YENİ: Auth servisini başlatıyoruz
+let app;
+let db;
+let auth;
 
-// YENİ: Artık hem 'db' hem de 'auth'u export ediyoruz
+// API anahtarı varsa Firebase'i başlat, yoksa null olarak bırak
+if (firebaseConfig.apiKey) {
+  app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+  db = getFirestore(app);
+  auth = getAuth(app);
+} else {
+  // API anahtarı yoksa, uygulamanın çökmesini engellemek için null olarak ayarla
+  app = null;
+  db = null;
+  auth = null;
+  console.warn("Firebase API Key bulunamadı. Firebase gerektiren özellikler çalışmayacaktır.");
+}
+
 export { db, auth };
