@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "GitLab", 
     "Projelerim", 
     "Yeteneklerim", 
-    "İletişim"
+    "Deneyimlerim",
     "Üniversite Öğrencisi",
     "Stajyer",
     "Yazılım Mühendisliği",
@@ -64,6 +64,7 @@ export const metadata: Metadata = {
     "Algoritmalar",             "Veri Yapıları",
     "Yazılım Testi",
     "Sürüm Kontrolü",  
+    "İletişim",
     ],
   
   openGraph: {
