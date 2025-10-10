@@ -1,17 +1,16 @@
 // src/components/Gezegen.jsx
 "use client";
+
 import React, { useRef, useState } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import Ay from './Ay';
 
+// Veriyi 'gezegenData' prop'u ile, fonksiyonu 'onGezegenClick' prop'u ile alıyoruz.
 const Gezegen = ({ gezegenData, onGezegenClick }) => {
   const meshRef = useRef();
   const [hovered, setHover] = useState(false);
   const renkHaritasi = gezegenData.textureUrl ? useLoader(TextureLoader, gezegenData.textureUrl) : null;
-
-  // Gezegen boyutunu %20 artırıyoruz (Yeni Özellik 1)
-  const newSize = gezegenData.size * 1.2; 
 
   useFrame(({ clock }) => {
     if (meshRef.current) {
@@ -25,32 +24,23 @@ const Gezegen = ({ gezegenData, onGezegenClick }) => {
   });
 
   return (
-    <group>
-      {/* Yörünge Çizgisi (Yeni Özellik 3) - Sadece Gezegen bileşeninde çizmek yerine, page.tsx'te Ring bileşeni zaten var. 
-      Ancak, bu bileşenin kendi yörünge çizgisini çizmesini sağlayarak daha modüler hale getirebiliriz. 
-      Ancak page.tsx'te zaten Ring bileşeni kullanıldığı için, bu değişikliği page.tsx'te yapmak daha doğru olacaktır. 
-      Şimdilik sadece gezegen boyutunu ve hover/click efektini güncelleyelim. */}
-
-      <mesh
-        ref={meshRef}
-        onClick={(event) => {
-          event.stopPropagation();
-          onGezegenClick(gezegenData);
-        }}
-        onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
-        onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
-      >
-        {/* Boyut artırıldı */}
-        <sphereGeometry args={[newSize, 32, 32]} /> 
-        <meshStandardMaterial
-          map={renkHaritasi}
-          // Hover/Click Efekti İyileştirildi (Yeni Özellik 2)
-          emissive={hovered ? gezegenData.color || '#ffffff' : '#000000'}
-          emissiveIntensity={hovered ? 1.5 : 0} // Parlaklık artırıldı
-        />
-        {gezegenData.id === 'kampus-sosyal' && <Ay />}
-      </mesh>
-    </group>
+    <mesh
+      ref={meshRef}
+      onClick={(event) => {
+        event.stopPropagation();
+        onGezegenClick(gezegenData); // Tıklanınca sadece temiz veri objesini geri gönder
+      }}
+      onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
+    >
+      <sphereGeometry args={[gezegenData.size, 32, 32]} />
+      <meshStandardMaterial
+        map={renkHaritasi}
+        emissive={hovered ? gezegenData.color || '#ffffff' : '#000000'}
+        emissiveIntensity={hovered ? 0.5 : 0}
+      />
+      {gezegenData.id === 'kampus-sosyal' && <Ay />}
+    </mesh>
   );
 };
 
