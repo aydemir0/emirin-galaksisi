@@ -1,6 +1,6 @@
 // src/components/Gunes.jsx
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import * as THREE from "three";
@@ -8,6 +8,7 @@ import * as THREE from "three";
 const Gunes = ({ onClick, isActive }) => { 
   const sunTexture = useLoader(TextureLoader, "/textures/gunes.jpg");
   const sunRef = useRef();
+  const [hovered, setHover] = useState(false);
 
   // Rotasyonu basitleştirme
   useFrame((state, delta) => {
@@ -17,7 +18,12 @@ const Gunes = ({ onClick, isActive }) => {
   });
 
   return (
-    <group ref={sunRef} onClick={onClick}>
+    <group 
+      ref={sunRef} 
+      onClick={onClick}
+      onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
+    >
       <mesh>
         <sphereGeometry args={[1.5, 32, 32]} />
         <meshBasicMaterial map={sunTexture} />
