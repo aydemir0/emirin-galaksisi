@@ -1,42 +1,34 @@
 // src/components/UzayIstasyonu.jsx
 "use client";
-
-import React, { useRef } from 'react';
-import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useRef, useState } from "react";
+import { useFrame, useLoader } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const UzayIstasyonu = ({ istasyonData, onClick }) => {
-  // Bu component'in render edilmeye başladığını konsolda görelim
-  console.log('Rendering UzayIstasyonu:', istasyonData.name);
-
-  const { scene } = useGLTF('/models/uzay-istasyonu.glb');
-  const istasyonRef = useRef();
+  const gltf = useLoader(GLTFLoader, "/models/uzay_istasyonu.glb");
+  const meshRef = useRef();
+  const [hovered, setHover] = useState(false);
 
   useFrame(({ clock }) => {
-    if (istasyonRef.current) {
-      const angle = (clock.getElapsedTime() * istasyonData.orbitSpeed) + (istasyonData.angleOffset || 0);
+    if (meshRef.current) {
+      const angle = clock.getElapsedTime() * istasyonData.orbitSpeed + istasyonData.angleOffset;
       const x = istasyonData.orbitRadius * Math.sin(angle);
       const z = istasyonData.orbitRadius * Math.cos(angle);
-      // Eğimli yörünge animasyonu
-      const y = Math.cos(angle * 2) * 0.3;
-      istasyonRef.current.position.set(x, y, z);
-      istasyonRef.current.rotation.y += 0.003;
+      meshRef.current.position.set(x, 0, z);
+      meshRef.current.rotation.y += 0.005;
     }
   });
 
   return (
-    <group 
-      ref={istasyonRef} 
-      onClick={(event) => {
-        event.stopPropagation();
-        onClick(istasyonData);
-      }}
-    >
-      <primitive object={scene} scale={0.1} /> 
-    </group>
+    <primitive
+      object={gltf.scene}
+      ref={meshRef}
+      scale={0.5}
+      onClick={() => onClick(istasyonData)}
+      onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
+    />
   );
 };
-
-useGLTF.preload('/models/uzay-istasyonu.glb');
 
 export default UzayIstasyonu;

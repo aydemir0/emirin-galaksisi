@@ -1,41 +1,34 @@
 // src/components/YeteneklerUydusu.jsx
 "use client";
-
-import React, { useRef } from 'react';
-import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useRef, useState } from "react";
+import { useFrame, useLoader } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const YeteneklerUydusu = ({ uyduData, onClick }) => {
-  const { scene } = useGLTF('/models/yetenekler-kristali.glb');
-  const kristalRef = useRef();
+  const gltf = useLoader(GLTFLoader, "/models/yetenekler_uydusu.glb");
+  const meshRef = useRef();
+  const [hovered, setHover] = useState(false);
 
   useFrame(({ clock }) => {
-    if (kristalRef.current) {
-      const angle = (clock.getElapsedTime() * uyduData.orbitSpeed) + (uyduData.angleOffset || 0);
+    if (meshRef.current) {
+      const angle = clock.getElapsedTime() * uyduData.orbitSpeed + uyduData.angleOffset;
       const x = uyduData.orbitRadius * Math.sin(angle);
       const z = uyduData.orbitRadius * Math.cos(angle);
-      const y = Math.cos(angle * 2) * 0.3;
-      kristalRef.current.position.set(x, y, z);
-      kristalRef.current.rotation.y += 0.01; // Kristal biraz daha hızlı dönebilir
+      meshRef.current.position.set(x, 0, z);
+      meshRef.current.rotation.y += 0.005;
     }
   });
 
   return (
-    <group 
-      ref={kristalRef} 
-      onClick={(event) => {
-        event.stopPropagation();
-        onClick(uyduData);
-      }}
-    >
-      <primitive 
-        object={scene} 
-        scale={0.05} // Başlangıç boyutu, gerekirse değiştiririz
-      /> 
-    </group>
+    <primitive
+      object={gltf.scene}
+      ref={meshRef}
+      scale={0.5}
+      onClick={() => onClick(uyduData)}
+      onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
+    />
   );
 };
-
-useGLTF.preload('/models/yetenekler-kristali.glb');
 
 export default YeteneklerUydusu;
