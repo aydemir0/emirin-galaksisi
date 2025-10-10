@@ -36,6 +36,7 @@ export default function Home() {
   const [adminMode, setAdminMode] = useState(false);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true); // Yüklenme durumu eklendi
 
   // Mobil Kontrolü
   useEffect(() => {
@@ -60,18 +61,24 @@ export default function Home() {
     };
   }, []);
 
-  // Blog Yazılarını Çekme
+  // Blog Yazılarını Çekme (Sadece tarayıcıda ve db varsa çalışacak şekilde ayarlandı)
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "blogPosts"));
-        const posts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as BlogPost[];
-        setBlogPosts(posts);
-      } catch (error) {
-        console.error("Firebase'den blog yazıları çekilirken hata:", error);
-      }
-    };
-    getPosts();
+    if (typeof window !== 'undefined' && db) { // Sadece istemci tarafında ve db varsa çalıştır
+      const getPosts = async () => {
+        try {
+          const querySnapshot = await getDocs(collection(db, "blogPosts"));
+          const posts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as BlogPost[];
+          setBlogPosts(posts);
+        } catch (error) {
+          console.error("Firebase'den blog yazıları çekilirken hata:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      getPosts();
+    } else {
+      setLoading(false); // Sunucu tarafında veya db yoksa yüklemeyi bitir
+    }
   }, []);
 
   const odysseyData: ProfileOrbit = {
@@ -118,6 +125,14 @@ export default function Home() {
   // Mobil Uyumluluk Çözümü: Bilgi Paneli açıkken Canvas'ın genişliğini dinamik olarak ayarlama
   const canvasWidth = seciliProje ? (isMobile ? '0%' : '66.66%') : '100%';
   const panelWidth = seciliProje ? (isMobile ? '100%' : '33.33%') : '0%';
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: 'black', color: 'white' }}>
+        Yükleniyor...
+      </div>
+    );
+  }
 
   return (
     <main style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: isMobile ? 'column' : 'row', backgroundColor: 'black' }}>
