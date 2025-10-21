@@ -1,9 +1,9 @@
-// src/components/Gunes.jsx
+
 "use client";
 
 import { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { TextureLoader } from "three"; // three/src/loaders/TextureLoader yerine bu daha iyi
+import { TextureLoader } from "three"
 import * as THREE from "three";
 
 const Gunes = ({ onClick, isActive }) => { 
@@ -32,7 +32,7 @@ const Gunes = ({ onClick, isActive }) => {
           side={THREE.BackSide}
         />
       </mesh>
-      {/* Test uyduları buradan kaldırıldı */}
+    
     </group>
   );
 };
