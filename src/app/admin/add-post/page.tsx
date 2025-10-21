@@ -1,4 +1,4 @@
-// src/app/admin/add-post/page.tsx
+
 "use client";
 
 import { useState } from 'react';
@@ -34,13 +34,12 @@ const AddPostPage = () => {
   alert('Yeni blog yazısı başarıyla veritabanına eklendi!');
     
 
-      // Formu temizle
       setTitle('');
       setUrl('');
       setPublicationDate('');
       setExcerpt('');
-      setContent(''); // Content state'ini de temizle
-      router.push('/'); // Ana sayfaya yönlendir
+      setContent(''); 
+      router.push('/'); 
 
     } catch (e) {
       console.error("Veritabanına yazılırken hata oluştu: ", e);
