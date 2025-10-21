@@ -2,17 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* YENİ EKLENEN BÖLÜM: Tarayıcı stillerini sıfırlar */
+
 html,
 body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Sayfada scroll bar çıkmasını engeller */
+  overflow: hidden; 
 }
 
-/* Animasyon kodumuz (zaten ekli olmalı) */
+
 @keyframes slideInFromRight {
   from {
     transform: translateX(100%);
@@ -22,7 +22,7 @@ body {
     transform: translateX(0);
     opacity: 1;
   }
-}/* src/app/globals.css'in en altına ekle */
+}
 
 @keyframes fadeIn {
   from { opacity: 0; }
