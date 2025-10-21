@@ -1,4 +1,3 @@
-// src/components/YeteneklerUydusu.jsx
 "use client";
 
 import React, { useRef } from 'react';
