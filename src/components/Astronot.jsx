@@ -1,17 +1,17 @@
-// src/components/Astronot.jsx
+
 "use client";
 
-import React, { useRef, useState } from 'react'; // useState'i import ettik
-import { useGLTF, Ring } from '@react-three/drei'; // Ring'i import ettik
+import React, { useRef, useState } from 'react'; 
+import { useGLTF, Ring } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three'; // Parlama efekti için THREE'yi import ettik
+import * as THREE from 'three'; 
 
 const Astronot = (props) => {
   const { astronotData, onClick } = props;
   const { scene } = useGLTF('/models/astronot.glb');
   const astronotRef = useRef();
 
-  // YENİ: Fare'nin obje üzerinde olup olmadığını takip eden state
+  
   const [hovered, setHover] = useState(false);
 
   useFrame(({ clock }) => {
@@ -49,19 +49,18 @@ const Astronot = (props) => {
         rotation-y={Math.PI / 2}
       /> 
 
-      {/* --- YENİ BÖLÜM: HOLOGRAM EFEKTİ --- */}
-      {/* 'hovered' durumu true ise, yani fare üzerindeyse, bu halkayı çiz */}
+     
       {hovered && (
         <Ring 
-          position={[0.5, 0.8, 0]} // Astronotun biraz sağına ve yukarısına
-          rotation={[Math.PI / 2.5, 0, 0]} // Hafif açılı dursun
-          args={[0.6, 0.7, 64]} // İç yarıçap, dış yarıçap, segment sayısı
+          position={[0.5, 0.8, 0]}
+          rotation={[Math.PI / 2.5, 0, 0]}
+          args={[0.6, 0.7, 64]} 
         >
           <meshBasicMaterial 
-            color="#00ffff" // Parlak cyan rengi
+            color="#00ffff" 
             transparent 
             opacity={0.5}
-            blending={THREE.AdditiveBlending} // Işıkların üst üste binerek daha da parlamasını sağlar
+            blending={THREE.AdditiveBlending} 
             side={THREE.DoubleSide}
           />
         </Ring>
