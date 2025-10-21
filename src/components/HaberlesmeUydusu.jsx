@@ -1,4 +1,4 @@
-// src/components/HaberlesmeUydusu.jsx
+
 "use client";
 
 import React, { useRef } from 'react';
@@ -16,7 +16,7 @@ const HaberlesmeUydusu = ({ uyduData, onClick }) => {
       const z = uyduData.orbitRadius * Math.cos(angle);
       const y = Math.cos(angle * 2) * 0.3;
       uyduRef.current.position.set(x, y, z);
-      uyduRef.current.rotation.y += 0.005; // Kendi etrafında yavaşça dönsün
+      uyduRef.current.rotation.y += 0.005; 
     }
   });
 
@@ -30,7 +30,7 @@ const HaberlesmeUydusu = ({ uyduData, onClick }) => {
     >
       <primitive 
         object={scene} 
-        scale={0.20} // Başlangıç boyutu, gerekirse değiştiririz
+        scale={0.20}
       /> 
     </group>
   );
