@@ -1,4 +1,4 @@
-// src/app/page.tsx
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -8,7 +8,6 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { db } from "../lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Canvas, ThreeEvent } from "@react-three/fiber";
-// Component ve veri importları
 import { projects } from "../data/projects";
 import { profileOrbits } from "../data/profileOrbits";
 import { blogData } from "../data/blogs";
