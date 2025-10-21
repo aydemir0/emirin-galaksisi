@@ -1,11 +1,9 @@
-// src/components/Uydu.jsx
 "use client";
 
 import React, { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
 const Uydu = ({ uyduData, onUyduClick }) => {
-  // Bu component'in render edilmeye başladığını konsolda görelim
   ('Rendering Uydu:', uyduData.name);
 
   const meshRef = useRef();
@@ -16,7 +14,6 @@ const Uydu = ({ uyduData, onUyduClick }) => {
       const angle = (clock.getElapsedTime() * uyduData.orbitSpeed) + (uyduData.angleOffset || 0);
       const x = uyduData.orbitRadius * Math.sin(angle);
       const z = uyduData.orbitRadius * Math.cos(angle);
-      // Eğimli yörünge animasyonu
       const y = Math.cos(angle * 2) * 0.3; 
       meshRef.current.position.set(x, y, z);
       meshRef.current.rotation.y += 0.005;
