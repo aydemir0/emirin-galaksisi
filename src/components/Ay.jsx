@@ -1,4 +1,4 @@
-// src/components/Ay.jsx
+
 "use client";
 
 import { useRef } from 'react';
@@ -9,7 +9,7 @@ const Ay = () => {
 
   useFrame(({ clock }) => {
     if (ayRef.current) {
-      // Bu Ay'ın, içinde bulunduğu gezegenin etrafındaki yörüngesi
+     
       const yorungeHizi = 1;
       const yorungeYaricapi = 1.2;
       const angle = clock.getElapsedTime() * yorungeHizi;
@@ -19,7 +19,7 @@ const Ay = () => {
       
       ayRef.current.position.set(x, 0, z);
 
-      // Ay'ın kendi etrafında dönmesi
+      
       ayRef.current.rotation.y += 0.005;
     }
   });
