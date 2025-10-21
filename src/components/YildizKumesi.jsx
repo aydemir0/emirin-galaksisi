@@ -1,4 +1,3 @@
-// src/components/YildizKumesi.jsx (DOĞRU VE SON HALİ)
 "use client";
 
 import React, { useState, useRef, useMemo } from 'react';
@@ -17,7 +16,6 @@ const YildizKumesi = (props) => {
   useFrame((state, delta) => {
     ref.current.rotation.x -= delta / 10;
     ref.current.rotation.y -= delta / 15;
-    // Shader'a zamanı göndererek animasyonu sağlıyoruz
     if(pointMaterialRef.current && pointMaterialRef.current.uniforms) {
        pointMaterialRef.current.uniforms.time.value = state.clock.getElapsedTime();
     }
@@ -67,7 +65,7 @@ const YildizKumesi = (props) => {
           size={0.005}
           sizeAttenuation={true}
           depthWrite={false}
-          onBeforeCompile={onBeforeCompile} // Shader'ımızı buraya enjekte ediyoruz
+          onBeforeCompile={onBeforeCompile} 
         />
       </Points>
     </group>
