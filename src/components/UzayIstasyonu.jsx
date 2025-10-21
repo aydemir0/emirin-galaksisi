@@ -1,4 +1,3 @@
-// src/components/UzayIstasyonu.jsx
 "use client";
 
 import React, { useRef } from 'react';
@@ -6,7 +5,7 @@ import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
 const UzayIstasyonu = ({ istasyonData, onClick }) => {
-  // Bu component'in render edilmeye başladığını konsolda görelim
+ 
   console.log('Rendering UzayIstasyonu:', istasyonData.name);
 
   const { scene } = useGLTF('/models/uzay-istasyonu.glb');
@@ -17,7 +16,7 @@ const UzayIstasyonu = ({ istasyonData, onClick }) => {
       const angle = (clock.getElapsedTime() * istasyonData.orbitSpeed) + (istasyonData.angleOffset || 0);
       const x = istasyonData.orbitRadius * Math.sin(angle);
       const z = istasyonData.orbitRadius * Math.cos(angle);
-      // Eğimli yörünge animasyonu
+     
       const y = Math.cos(angle * 2) * 0.3;
       istasyonRef.current.position.set(x, y, z);
       istasyonRef.current.rotation.y += 0.003;
