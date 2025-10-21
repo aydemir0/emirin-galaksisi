@@ -13,12 +13,10 @@ const ProjeDetaylari = ({ proje, onClose }) => {
   if (!proje) return null;
 
   return createPortal(
-    // DIŞ ÇERÇEVE (Senin ekran görüntüsünde görünen kısım)
     <div 
       className="fixed inset-0 bg-white bg-opacity-20 backdrop-blur-sm flex items-center justify-center z-50"
       onClick={onClose}
     >
-      {/* İÇ KART (Senin ekran görüntüsünde eksik olan kısım) */}
       <div 
         className="relative bg-white text-gray-800 rounded-2xl shadow-xl max-w-lg w-full mx-4 p-8 flex flex-col"
         onClick={(e) => e.stopPropagation()}
