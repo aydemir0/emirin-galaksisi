@@ -1,4 +1,4 @@
-// src/components/Gezegen.jsx
+
 "use client";
 
 import React, { useRef, useState } from 'react';
@@ -6,7 +6,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import Ay from './Ay';
 
-// Veriyi 'gezegenData' prop'u ile, fonksiyonu 'onGezegenClick' prop'u ile alıyoruz.
+
 const Gezegen = ({ gezegenData, onGezegenClick }) => {
   const meshRef = useRef();
   const [hovered, setHover] = useState(false);
@@ -28,7 +28,7 @@ const Gezegen = ({ gezegenData, onGezegenClick }) => {
       ref={meshRef}
       onClick={(event) => {
         event.stopPropagation();
-        onGezegenClick(gezegenData); // Tıklanınca sadece temiz veri objesini geri gönder
+        onGezegenClick(gezegenData); 
       }}
       onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
