@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
 
-  // --- GOOGLE DOĞRULAMA KODUN BURADA ---
+
   verification: {
     google: 'Fputwk0VeOiqU8y3DBm3fIT9SGEs45jqs_3OHAJ0aqY',
   },
