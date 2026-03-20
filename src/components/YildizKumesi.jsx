@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, memo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import { inSphere } from 'maath/random';
@@ -11,13 +11,14 @@ const YildizKumesi = (props) => {
   const [hovered, setHover] = useState(false);
   const pointMaterialRef = useRef();
 
-  const starPositions = useMemo(() => inSphere(new Float32Array(5000 * 3), { radius: 1.5 }), []);
+  const starPositions = useMemo(() => inSphere(new Float32Array(2500 * 3), { radius: 1.5 }), []);
 
   useFrame((state, delta) => {
     ref.current.rotation.x -= delta / 10;
     ref.current.rotation.y -= delta / 15;
-    if(pointMaterialRef.current && pointMaterialRef.current.uniforms) {
-       pointMaterialRef.current.uniforms.time.value = state.clock.getElapsedTime();
+    // Shader'a zamanı göndererek animasyonu sağlıyoruz
+    if (pointMaterialRef.current && pointMaterialRef.current.uniforms) {
+      pointMaterialRef.current.uniforms.time.value = state.clock.getElapsedTime();
     }
   });
 
@@ -37,7 +38,7 @@ const YildizKumesi = (props) => {
     );
     pointMaterialRef.current = shader;
   };
-  
+
   return (
     <group rotation={[0, 0, Math.PI / 4]} {...props}>
       <Points
@@ -72,4 +73,4 @@ const YildizKumesi = (props) => {
   );
 };
 
-export default YildizKumesi;
+export default memo(YildizKumesi);

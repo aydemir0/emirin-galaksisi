@@ -1,12 +1,19 @@
 
+<<<<<<< HEAD
 "use client";
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
+=======
+import React, { useRef, useState, memo } from 'react';
+import { useGLTF, Html } from '@react-three/drei';
+>>>>>>> 44751a7 (feat: 3D galaxy major overhaul - NASA textures, Warp Drive effect, PilotHUD, and premium sidebar UI)
 import { useFrame } from '@react-three/fiber';
 
 const HaberlesmeUydusu = ({ uyduData, onClick }) => {
   const { scene } = useGLTF('/models/haberlesme-uydusu.glb');
+  const clonedScene = scene.clone();
   const uyduRef = useRef();
+  const [hovered, setHovered] = useState(false);
 
   useFrame(({ clock }) => {
     if (uyduRef.current) {
@@ -20,21 +27,48 @@ const HaberlesmeUydusu = ({ uyduData, onClick }) => {
   });
 
   return (
-    <group 
-      ref={uyduRef} 
+    <group
+      ref={uyduRef}
       onClick={(event) => {
         event.stopPropagation();
         onClick(uyduData);
       }}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
+<<<<<<< HEAD
       <primitive 
         object={scene} 
         scale={0.20}
       /> 
+=======
+      <primitive
+        object={clonedScene}
+        scale={0.20}
+        frustumCulled={true}
+      />
+      
+      {/* Hover İsim Etiketi */}
+      {hovered && (
+        <Html position={[0, 1.5, 0]} center style={{ pointerEvents: 'none', transition: 'opacity 0.2s', zIndex: 50 }}>
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.8)', padding: '4px 12px',
+            borderRadius: '16px', border: '1px solid #38bdf8', color: '#38bdf8',
+            whiteSpace: 'nowrap', fontSize: '12px', fontWeight: 'bold', backdropFilter: 'blur(4px)'
+          }}>
+            {uyduData.name}
+          </div>
+        </Html>
+      )}
+>>>>>>> 44751a7 (feat: 3D galaxy major overhaul - NASA textures, Warp Drive effect, PilotHUD, and premium sidebar UI)
     </group>
   );
 };
 
 useGLTF.preload('/models/haberlesme-uydusu.glb');
 
+<<<<<<< HEAD
 export default HaberlesmeUydusu;
+=======
+export default memo(HaberlesmeUydusu);
+>>>>>>> 44751a7 (feat: 3D galaxy major overhaul - NASA textures, Warp Drive effect, PilotHUD, and premium sidebar UI)

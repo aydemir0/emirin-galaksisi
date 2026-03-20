@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useRef } from 'react';
-import { useGLTF } from '@react-three/drei';
+import React, { useRef, useState, memo } from 'react';
+import { useGLTF, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
 const YeteneklerUydusu = ({ uyduData, onClick }) => {
   const { scene } = useGLTF('/models/yetenekler-kristali.glb');
+  const clonedScene = scene.clone();
   const kristalRef = useRef();
+  const [hovered, setHovered] = useState(false);
 
   useFrame(({ clock }) => {
     if (kristalRef.current) {
@@ -20,21 +22,41 @@ const YeteneklerUydusu = ({ uyduData, onClick }) => {
   });
 
   return (
-    <group 
-      ref={kristalRef} 
+    <group
+      ref={kristalRef}
       onClick={(event) => {
         event.stopPropagation();
         onClick(uyduData);
       }}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
-      <primitive 
-        object={scene} 
-        scale={0.05} // Başlangıç boyutu, gerekirse değiştiririz
-      /> 
+      <primitive
+        object={clonedScene}
+        scale={0.05}
+        frustumCulled={true}
+      />
+      
+      {/* Hover İsim Etiketi */}
+      {hovered && (
+        <Html position={[0, 1.5, 0]} center style={{ pointerEvents: 'none', transition: 'opacity 0.2s', zIndex: 50 }}>
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.8)', padding: '4px 12px',
+            borderRadius: '16px', border: '1px solid #c084fc', color: '#c084fc',
+            whiteSpace: 'nowrap', fontSize: '12px', fontWeight: 'bold', backdropFilter: 'blur(4px)'
+          }}>
+            {uyduData.name}
+          </div>
+        </Html>
+      )}
     </group>
   );
 };
 
 useGLTF.preload('/models/yetenekler-kristali.glb');
 
+<<<<<<< HEAD
 export default YeteneklerUydusu;
+=======
+export default memo(YeteneklerUydusu);
+>>>>>>> 44751a7 (feat: 3D galaxy major overhaul - NASA textures, Warp Drive effect, PilotHUD, and premium sidebar UI)

@@ -9,7 +9,12 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+<<<<<<< HEAD
   overflow: hidden; 
+=======
+  overflow: hidden; /* Sayfada scroll bar çıkmasını engeller */
+  touch-action: none; /* Mobil cihazlarda 3D etkileşimini düzeltir */
+>>>>>>> 44751a7 (feat: 3D galaxy major overhaul - NASA textures, Warp Drive effect, PilotHUD, and premium sidebar UI)
 }
 
 

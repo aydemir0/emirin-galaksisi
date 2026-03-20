@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 
 const Uydu = ({ uyduData, onUyduClick }) => {
   ('Rendering Uydu:', uyduData.name);
@@ -27,8 +28,8 @@ const Uydu = ({ uyduData, onUyduClick }) => {
         event.stopPropagation();
         onUyduClick(uyduData);
       }}
-      onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer'; }}
-      onPointerOut={() => { setHover(false); document.body.style.cursor = 'default'; }}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
       <sphereGeometry args={[uyduData.size, 32, 32]} />
       <meshStandardMaterial
@@ -36,6 +37,19 @@ const Uydu = ({ uyduData, onUyduClick }) => {
         emissive={hovered ? uyduData.color : '#000000'}
         emissiveIntensity={hovered ? 0.6 : 0}
       />
+      
+      {/* Hover İsim Etiketi */}
+      {hovered && (
+        <Html position={[0, uyduData.size + 0.5, 0]} center style={{ pointerEvents: 'none', transition: 'opacity 0.2s', zIndex: 50 }}>
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.8)', padding: '4px 12px',
+            borderRadius: '16px', border: `1px solid ${uyduData.color || '#5eead4'}`, 
+            color: 'white', whiteSpace: 'nowrap', fontSize: '13px', fontWeight: 'bold', backdropFilter: 'blur(4px)'
+          }}>
+            {uyduData.name}
+          </div>
+        </Html>
+      )}
     </mesh>
   );
 };

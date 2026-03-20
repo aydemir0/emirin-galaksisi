@@ -10,7 +10,7 @@ export const profileOrbits = [
     angleOffset: 0, // YENİ: Başlangıç noktası (0 derece)
     color: "#a7c7e7",
     imageUrl: "/images/profil.jpg",
-    description: "2004 yılında Ağrı'da doğdum ve lise de dahil olmak üzere  kadar eğitimimi tamamladım memleketimde tamamladım, teknolojiye ve yaratıcılığa olan tutkumla şekillendi. Şu anda Kütahya Dumlupınar Üniversitesi Bilgisayar Mühendisliği 3. sınıf öğrencisi olarak bu serüvene devam ediyorum. Benim için kodlama, sadece satırlardan oluşan bir meslek değil; kendini sürekli geliştirme sanatı ve iç dünyamdaki fikirleri dijital evrende var etme biçimidir. Bu portfolyodaki her bir proje, bu felsefenin bir yansımasıdır."
+    description: "2004 yılında Ağrı'da doğdum. Lise hayatım da dahil olmak üzere eğitim serüvenimin bu kısmını memleketimde, teknolojiye ve yaratıcılığa olan tutkumu keşfederek tamamladım. Şu anda Kütahya Dumlupınar Üniversitesi Bilgisayar Mühendisliği bölümünde 3. sınıf öğrencisi olarak eğitimime devam ediyorum. Benim için kodlama, sadece ekran üzerindeki satırlardan ibaret bir meslek değil; kendini sürekli geliştirme sanatı ve iç dünyamdaki fikirleri dijital evrende somutlaştırma biçimidir. İncelediğiniz bu portfolyodaki her bir proje, tasarım ve mühendislik felsefemin bir yansımasıdır."
   },
   {
     id: "sosyal-medya",
