@@ -1,3 +1,4 @@
+// src/components/YildizKumesi.jsx (DOĞRU VE SON HALİ)
 "use client";
 
 import React, { useState, useRef, useMemo, memo } from 'react';
@@ -66,7 +67,7 @@ const YildizKumesi = (props) => {
           size={0.005}
           sizeAttenuation={true}
           depthWrite={false}
-          onBeforeCompile={onBeforeCompile} 
+          onBeforeCompile={onBeforeCompile} // Shader'ımızı buraya enjekte ediyoruz
         />
       </Points>
     </group>

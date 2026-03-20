@@ -1,7 +1,9 @@
+// src/components/ProfilKarti.jsx
 
 "use client";
 import Image from "next/image";
 
+// Profil verilerini doğrudan bu dosyada tutalım
 const profileData = {
     name: "Muhammed Emin Aydın",
     title: "Yazılım Mühendisi Adayı",
@@ -27,7 +29,7 @@ const ProfilKarti = ({ onClose }) => {
     }} onClick={onClose}>
       <div style={{
         position: 'relative',
-        backgroundColor: '#111827', 
+        backgroundColor: '#111827', // slate-900
         color: 'white',
         borderRadius: '1rem',
         boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.25)',
