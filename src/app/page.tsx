@@ -28,8 +28,8 @@ import YeteneklerUydusu from "../components/YeteneklerUydusu"; // Güneş menüs
 // 🚀 LAZY LOADING: Sadece ağır ve kritik olmayan component'ler
 const UzayGemisi = lazy(() => import("../components/UzayGemisi")); // Dekoratif, 7.85MB model
 
-// Simple loading fallback component is no longer needed because we will use full-screen Loader from drei
-const LoadingFallback = () => null;
+
+
 
 interface CameraRigProps {
   isMobile: boolean;
