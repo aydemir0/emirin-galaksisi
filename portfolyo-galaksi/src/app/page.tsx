@@ -271,7 +271,7 @@ export default function Home() {
             <EffectComposer multisampling={0}>
               <Bloom intensity={0.6} luminanceThreshold={0.4} luminanceSmoothing={0.9} mipmapBlur />
               <Vignette eskil={false} offset={0.1} darkness={1.2} />
-              {warpMode ? <ChromaticAberration offset={new THREE.Vector2(0.04, 0.04)} /> : null}
+              <ChromaticAberration offset={warpMode ? new THREE.Vector2(0.04, 0.04) : new THREE.Vector2(0, 0)} />
             </EffectComposer>
 
             {/* Force shader compilation to prevent first-click stutter */}
