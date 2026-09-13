@@ -1,0 +1,8 @@
+{
+  "accentColor": "#8b5cf6",
+  "cssTheme": "Minimal",
+  "enabledCssSnippets": [
+    "project-control-center"
+  ],
+  "baseFontSize": 16
+}
