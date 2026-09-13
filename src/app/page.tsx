@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, Suspense, lazy, useCallback } from "react";
 import Link from "next/link";
-import { OrbitControls, Preload, Stars } from "@react-three/drei";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { OrbitControls, Preload, Stars, Sparkles, Text, AdaptiveDpr, AdaptiveEvents } from "@react-three/drei";
+import { EffectComposer, Bloom, ChromaticAberration, Vignette } from "@react-three/postprocessing";
 import { db } from "../lib/firebase";
 import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -20,10 +20,14 @@ import Uydu from "../components/Uydu";
 import BilgiPaneli from "../components/BilgiPaneli"; // Çekmece panel - mutlaka hemen yüklenmeli
 import PilotHUD from "../components/PilotHUD"; // Özel Uzay Gemisi HUD Arayüzü
 import YildizKumesi from "../components/YildizKumesi";
+import AsteroitKusagi from "../components/AsteroitKusagi";
 import Astronot from "../components/Astronot"; // Güneş menüsü - hemen yüklenmeli
 import UzayIstasyonu from "../components/UzayIstasyonu"; // Güneş menüsü - hemen yüklenmeli
 import HaberlesmeUydusu from "../components/HaberlesmeUydusu"; // Güneş menüsü - hemen yüklenmeli
 import YeteneklerUydusu from "../components/YeteneklerUydusu"; // Güneş menüsü - hemen yüklenmeli
+import Meteor from "../components/Meteor";
+import SpaceAudio from "../components/SpaceAudio";
+import Minimap from "../components/Minimap";
 
 // 🚀 LAZY LOADING: Sadece ağır ve kritik olmayan component'ler
 const UzayGemisi = lazy(() => import("../components/UzayGemisi")); // Dekoratif, 7.85MB model
@@ -175,16 +179,17 @@ export default function Home() {
   const yildizKumesiPozisyonu: [number, number, number] = [Math.cos(Math.PI / 4) * -guvenliMesafe, 0, Math.sin(Math.PI / 4) * guvenliMesafe];
 
   return (
-    <main style={{ height: '100vh', width: '100vw', backgroundColor: 'black', position: 'relative', overflow: 'hidden' }}>
+    <main style={{ height: '100vh', width: '100vw', backgroundColor: '#050515', position: 'relative', overflow: 'hidden' }}>
 
 
       <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
         <Canvas
+          shadows
           dpr={[1, 1.5]}
           performance={{ min: 0.5 }}
           gl={{
             powerPreference: "high-performance",
-            antialias: true,
+            antialias: false, // EffectComposer kendi MSAA'sını yapıyor, bunu kapatmak GPU'yu devasa rahatlatır
             stencil: false,
             depth: true
           }}
@@ -192,13 +197,40 @@ export default function Home() {
         >
           <CameraRig isMobile={isMobile} targetSelected={!!seciliProje} isWarping={warpMode} />
           <Suspense fallback={<CustomLoader />}>
-            <ambientLight intensity={0.5} />
-            <pointLight position={[0, 0, 0]} intensity={150} castShadow={false} />
-            <OrbitControls enableDamping={true} />
+            {/* Daha parlak ve yumuşak ortam aydınlatması */}
+            <ambientLight intensity={0.5} color="#c7d2fe" />
+            <pointLight 
+              position={[0, 0, 0]} 
+              intensity={280} 
+              color="#ffedd5"
+              castShadow={true} 
+              shadow-mapSize={[512, 512]} 
+            />
+            {/* Derinlik hissi veren uzay sisi (Fog) */}
+            <fog attach="fog" args={['#050515', 20, 90]} />
+            
+            <OrbitControls enableDamping={true} maxPolarAngle={Math.PI / 1.5} />
             <ArkaPlan onClick={handleKapat} />
             
-            <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={warpMode ? 10 : 1} />
+            {/* FPS düştüğünde çözünürlüğü ve eventleri otomatik kısar */}
+            <AdaptiveDpr pixelated />
+            <AdaptiveEvents />
             
+            <Stars radius={100} depth={50} count={4000} factor={4} saturation={0.5} fade speed={warpMode ? 10 : 1} />
+            
+            {/* Bulutsu (Nebula) Efekti Veren Renkli Işıltılar */}
+            <Sparkles count={400} scale={60} size={3} speed={0.1} opacity={0.15} color="#c084fc" /> {/* Mor bulutsu */}
+            <Sparkles count={400} scale={60} size={3} speed={0.1} opacity={0.15} color="#38bdf8" /> {/* Mavi bulutsu */}
+            <Sparkles count={300} scale={40} size={1.5} speed={0.2} opacity={0.3} color="#5eead4" /> {/* Turkuaz yıldız tozları */}
+            
+            <Meteor />
+            <Meteor />
+            <Meteor />
+            
+            {/* İç ve Dış Asteroit Kuşakları */}
+            <AsteroitKusagi radius={9.5} count={600} speed={0.0004} color="#94a3b8" />
+            <AsteroitKusagi radius={23} count={1200} speed={0.0002} color="#64748b" />
+
             <YildizKumesi position={yildizKumesiPozisyonu} onClick={handleYildizKumesiClick} />
 
 
@@ -211,7 +243,7 @@ export default function Home() {
                       color={proje.color}
                       size={0.02}
                       transparent
-                      opacity={0.4}
+                      opacity={0.2}
                       sizeAttenuation={true}
                     />
                   </points>
@@ -224,18 +256,7 @@ export default function Home() {
 
             <Gunes onClick={handleGunesClick} isActive={gunesMenuAcik} />
 
-            <UzayGemisi scale={0.5} onClick={(event: ThreeEvent<MouseEvent>) => {
-              event.stopPropagation();
-              setGunesMenuAcik(false);
-              setSeciliProje(null);
-              setWarpMode(true);
-              
-              // 2.5 saniye warp motoru çalışır, sonra paneli açar
-              setTimeout(() => {
-                setWarpMode(false);
-                setSeciliProje(odysseyData);
-              }, 2500);
-            }} />
+            <UzayGemisi scale={0.5} />
 
             <group visible={gunesMenuAcik}>
               {profileOrbits.map((uydu) => {
@@ -247,8 +268,10 @@ export default function Home() {
               })}
             </group>
 
-            <EffectComposer>
-              <Bloom intensity={1.2} luminanceThreshold={0.4} luminanceSmoothing={0.7} mipmapBlur />
+            <EffectComposer multisampling={0}>
+              <Bloom intensity={0.6} luminanceThreshold={0.4} luminanceSmoothing={0.9} mipmapBlur />
+              <Vignette eskil={false} offset={0.1} darkness={1.2} />
+              {warpMode && <ChromaticAberration offset={new THREE.Vector2(0.04, 0.04)} />}
             </EffectComposer>
 
             {/* Force shader compilation to prevent first-click stutter */}
@@ -283,6 +306,12 @@ export default function Home() {
           }}>Yeni Yazı Ekle</a>
         </Link>
       )}
+
+      {/* Dinamik Uzay Ambiyans Müziği */}
+      <SpaceAudio />
+      
+      {/* 2D Gerçek Zamanlı Radar */}
+      <Minimap />
     </main>
   );
 }

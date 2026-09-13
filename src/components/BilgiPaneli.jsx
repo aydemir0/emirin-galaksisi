@@ -21,9 +21,19 @@ const iconMap = {
 
 const BilgiPaneli = ({ proje, onClose }) => {
   const [expandedPostId, setExpandedPostId] = useState(null);
+  const [isWarping, setIsWarping] = useState(false);
 
   const handleToggleExpand = (postId) => {
     setExpandedPostId(expandedPostId === postId ? null : postId);
+  };
+
+  const handleWormholeLink = (e, url) => {
+    e.preventDefault();
+    setIsWarping(true);
+    setTimeout(() => {
+      window.open(url, '_blank');
+      setIsWarping(false);
+    }, 1500); // Işık hızı animasyon süresi
   };
 
   if (!proje) {
@@ -139,10 +149,29 @@ const BilgiPaneli = ({ proje, onClose }) => {
 
         <div style={{ flexGrow: 1, ...animasyonStili(0.6) }}></div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '2rem', paddingBottom: '2rem' }}>
-          {proje.liveUrl && <div style={{ ...animasyonStili(0.6) }}><a href={proje.liveUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', fontWeight: 'bold', padding: '1.2rem', borderRadius: '0.75rem', textAlign: 'center', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)', border: '1px solid rgba(255,255,255,0.1)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.5)' }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(16, 185, 129, 0.3)' }}>🚀 Canlı Siteyi Başlat</a></div>}
-          {proje.githubUrl && <div style={{ ...animasyonStili(0.7) }}><a href={proje.githubUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', background: 'rgba(255,255,255,0.05)', color: '#f8fafc', fontWeight: 'bold', padding: '1.2rem', borderRadius: '0.75rem', textAlign: 'center', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', border: '1px solid rgba(255,255,255,0.1)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)' }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}><FaGithub style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle', fontSize: '1.2rem' }}/> GitHub'da İncele</a></div>}
+          {proje.liveUrl && <div style={{ ...animasyonStili(0.6) }}><a href={proje.liveUrl} onClick={(e) => handleWormholeLink(e, proje.liveUrl)} style={{ display: 'block', width: '100%', background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', fontWeight: 'bold', padding: '1.2rem', borderRadius: '0.75rem', textAlign: 'center', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)', border: '1px solid rgba(255,255,255,0.1)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.5)' }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(16, 185, 129, 0.3)' }}>🚀 Canlı Siteye Işınlan</a></div>}
+          {proje.githubUrl && <div style={{ ...animasyonStili(0.7) }}><a href={proje.githubUrl} onClick={(e) => handleWormholeLink(e, proje.githubUrl)} style={{ display: 'block', width: '100%', background: 'rgba(255,255,255,0.05)', color: '#f8fafc', fontWeight: 'bold', padding: '1.2rem', borderRadius: '0.75rem', textAlign: 'center', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', border: '1px solid rgba(255,255,255,0.1)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)' }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}><FaGithub style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle', fontSize: '1.2rem' }}/> Kaynak Koduna Işınlan</a></div>}
         </div>
       </div>
+
+      {/* Wormhole CSS Animasyonu (Donma Yapmaz, Sadece CSS) */}
+      {isWarping && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+          background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(94,234,212,1) 20%, rgba(0,0,0,1) 100%)',
+          zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          animation: 'wormholeJump 1.5s ease-in-out forwards', pointerEvents: 'none'
+        }}>
+          <h1 style={{ color: 'black', fontSize: '4rem', textTransform: 'uppercase', fontStyle: 'italic', letterSpacing: '10px' }}>IŞINLANILIYOR...</h1>
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes wormholeJump {
+              0% { opacity: 0; transform: scale(0); }
+              50% { opacity: 1; transform: scale(2); }
+              100% { opacity: 1; transform: scale(10); background: white; }
+            }
+          `}} />
+        </div>
+      )}
     </div>
   );
 }

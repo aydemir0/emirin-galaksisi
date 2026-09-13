@@ -1,8 +1,7 @@
 "use client";
-import { useProgress, Html } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 
 const Loader = () => {
-  const { progress } = useProgress();
   return (
     <Html center>
       <div style={{
@@ -21,10 +20,10 @@ const Loader = () => {
           width: '250px', height: '6px', backgroundColor: 'rgba(30, 41, 59, 0.5)', borderRadius: '3px', overflow: 'hidden', boxShadow: '0 0 10px rgba(94, 234, 212, 0.2)'
         }}>
           <div style={{
-            width: `${progress}%`, height: '100%', backgroundColor: '#5eead4', transition: 'width 0.3s ease', boxShadow: '0 0 10px #5eead4'
+            width: `100%`, height: '100%', backgroundColor: '#5eead4', animation: 'pulse 1s infinite', boxShadow: '0 0 10px #5eead4'
           }} />
         </div>
-        <p style={{ marginTop: '15px', fontSize: '16px', fontWeight: 'bold', opacity: 0.8 }}>%{Math.round(progress)}</p>
+        <p style={{ marginTop: '15px', fontSize: '16px', fontWeight: 'bold', opacity: 0.8 }}>Hazırlanıyor...</p>
         <style dangerouslySetInnerHTML={{__html: `
           @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
           @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
